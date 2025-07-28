@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin & Learn - Interactive Learning Game</title>
+    <link rel="stylesheet" href="spin-learn.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Spin & Learn</h1>
+            </div>
+            <nav class="nav">
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#learn">Learn</a></li>
+                    <li><a href="#stats">Stats</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Dashboard Stats -->
+        <section class="dashboard">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-spins">0</h3>
+                            <p>Total Spins</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="correct-answers">0</h3>
+                            <p>Correct Answers</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="learning-streak">0</h3>
+                            <p>Learning Streak</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="accuracy-rate">0%</h3>
+                            <p>Accuracy Rate</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wheel Container -->
+        <section class="wheel-section">
+            <div class="container">
+                <div class="wheel-container">
+                    <div class="timer-display" id="timer-display">
+                        <div class="timer-content">
+                            <i class="fas fa-clock"></i>
+                            <span id="timer-text">Ready to Spin!</span>
+                        </div>
+                    </div>
+                    
+                    <div class="wheel-wrapper">
+                        <div class="wheel-shadow"></div>
+                        <div class="wheel" id="wheel">
+                            <div class="wheel-segment segment-1" data-topic="Mathematics">
+                                <span>Math</span>
+                            </div>
+                            <div class="wheel-segment segment-2" data-topic="Science">
+                                <span>Science</span>
+                            </div>
+                            <div class="wheel-segment segment-3" data-topic="History">
+                                <span>History</span>
+                            </div>
+                            <div class="wheel-segment segment-4" data-topic="Geography">
+                                <span>Geography</span>
+                            </div>
+                            <div class="wheel-segment segment-5" data-topic="Literature">
+                                <span>Literature</span>
+                            </div>
+                            <div class="wheel-segment segment-6" data-topic="Art">
+                                <span>Art</span>
+                            </div>
+                            <div class="wheel-segment segment-7" data-topic="Technology">
+                                <span>Tech</span>
+                            </div>
+                            <div class="wheel-segment segment-8" data-topic="Sports">
+                                <span>Sports</span>
+                            </div>
+                        </div>
+                        <div class="wheel-pointer">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="wheel-center">
+                            <button class="spin-button" id="spin-button" aria-label="Spin the wheel">
+                                <i class="fas fa-play"></i>
+                                <span>SPIN</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="progress-rings">
+                        <div class="progress-ring">
+                            <svg class="progress-ring-svg" width="120" height="120">
+                                <circle class="progress-ring-circle-bg" cx="60" cy="60" r="50"></circle>
+                                <circle class="progress-ring-circle" cx="60" cy="60" r="50" id="daily-progress"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span id="daily-percentage">0%</span>
+                                <small>Daily Goal</small>
+                            </div>
+                        </div>
+                        <div class="progress-ring">
+                            <svg class="progress-ring-svg" width="120" height="120">
+                                <circle class="progress-ring-circle-bg" cx="60" cy="60" r="50"></circle>
+                                <circle class="progress-ring-circle" cx="60" cy="60" r="50" id="weekly-progress"></circle>
+                            </svg>
+                            <div class="progress-text">
+                                <span id="weekly-percentage">0%</span>
+                                <small>Weekly Goal</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Question Modal -->
+    <div class="modal" id="question-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="question-topic">Topic</h2>
+                <button class="modal-close" id="close-question" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="question-container">
+                    <p id="question-text">Loading question...</p>
+                    <div class="options-container" id="options-container">
+                        <!-- Options will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="question-timer">
+                    <div class="timer-bar" id="question-timer-bar"></div>
+                    <span id="question-timer-text">30s</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Congratulations Modal -->
+    <div class="modal" id="congratulations-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content congratulations-content">
+            <div class="congratulations-animation">
+                <div class="confetti"></div>
+                <div class="trophy-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+            </div>
+            <div class="congratulations-text">
+                <h2>Congratulations!</h2>
+                <p id="congratulations-message">Great job! You got it right!</p>
+                <div class="points-earned">
+                    <span>+<span id="points-earned">10</span> Points</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="continue-learning">Continue Learning</button>
+                <button class="btn btn-secondary" id="view-explanation">View Explanation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div class="notifications" id="notifications"></div>
+
+    <!-- Audio Elements -->
+    <audio id="spin-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/wav">
+    </audio>
+    <audio id="win-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/wav">
+    </audio>
+    <audio id="correct-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmEcBgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" type="audio/wav">
+    </audio>
+
+    <script>
+        // Spin & Learn Game Logic
+        class SpinLearnGame {
+            constructor() {
+                this.wheel = document.getElementById('wheel');
+                this.spinButton = document.getElementById('spin-button');
+                this.questionModal = document.getElementById('question-modal');
+                this.congratulationsModal = document.getElementById('congratulations-modal');
+                this.notifications = document.getElementById('notifications');
+                
+                this.isSpinning = false;
+                this.cooldownTime = 30000; // 30 seconds
+                this.lastSpinTime = 0;
+                this.stats = this.loadStats();
+                
+                this.questions = {
+                    Mathematics: [
+                        { question: "What is 15 × 7?", options: ["105", "95", "115", "100"], correct: 0 },
+                        { question: "What is the square root of 144?", options: ["11", "12", "13", "14"], correct: 1 },
+                        { question: "What is 25% of 80?", options: ["15", "20", "25", "30"], correct: 1 }
+                    ],
+                    Science: [
+                        { question: "What is the chemical symbol for gold?", options: ["Go", "Au", "Gd", "Ag"], correct: 1 },
+                        { question: "How many bones are in the human body?", options: ["206", "208", "204", "210"], correct: 0 },
+                        { question: "What gas do plants absorb from the atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], correct: 2 }
+                    ],
+                    History: [
+                        { question: "In which year did World War II end?", options: ["1944", "1945", "1946", "1947"], correct: 1 },
+                        { question: "Who was the first person to walk on the moon?", options: ["Buzz Aldrin", "Neil Armstrong", "John Glenn", "Alan Shepard"], correct: 1 },
+                        { question: "Which empire was ruled by Julius Caesar?", options: ["Greek", "Persian", "Roman", "Egyptian"], correct: 2 }
+                    ],
+                    Geography: [
+                        { question: "What is the capital of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Perth"], correct: 2 },
+                        { question: "Which is the longest river in the world?", options: ["Amazon", "Nile", "Mississippi", "Yangtze"], correct: 1 },
+                        { question: "How many continents are there?", options: ["6", "7", "8", "5"], correct: 1 }
+                    ],
+                    Literature: [
+                        { question: "Who wrote 'Romeo and Juliet'?", options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"], correct: 1 },
+                        { question: "Which novel begins with 'It was the best of times'?", options: ["Great Expectations", "A Tale of Two Cities", "Oliver Twist", "David Copperfield"], correct: 1 },
+                        { question: "Who wrote '1984'?", options: ["Aldous Huxley", "Ray Bradbury", "George Orwell", "H.G. Wells"], correct: 2 }
+                    ],
+                    Art: [
+                        { question: "Who painted the Mona Lisa?", options: ["Van Gogh", "Picasso", "Da Vinci", "Michelangelo"], correct: 2 },
+                        { question: "Which art movement did Picasso help create?", options: ["Impressionism", "Cubism", "Surrealism", "Abstract"], correct: 1 },
+                        { question: "In which museum is the Mona Lisa displayed?", options: ["British Museum", "Metropolitan", "Louvre", "Uffizi"], correct: 2 }
+                    ],
+                    Technology: [
+                        { question: "What does 'WWW' stand for?", options: ["World Wide Web", "World Web Width", "Web World Wide", "Wide World Web"], correct: 0 },
+                        { question: "Who founded Microsoft?", options: ["Steve Jobs", "Bill Gates", "Mark Zuckerberg", "Larry Page"], correct: 1 },
+                        { question: "What does 'AI' stand for?", options: ["Automated Intelligence", "Artificial Intelligence", "Advanced Integration", "Algorithmic Interface"], correct: 1 }
+                    ],
+                    Sports: [
+                        { question: "How many players are on a basketball team on the court?", options: ["4", "5", "6", "7"], correct: 1 },
+                        { question: "In which sport would you perform a slam dunk?", options: ["Tennis", "Basketball", "Volleyball", "Football"], correct: 1 },
+                        { question: "How often are the Summer Olympics held?", options: ["Every 2 years", "Every 3 years", "Every 4 years", "Every 5 years"], correct: 2 }
+                    ]
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.updateStats();
+                this.updateTimer();
+                this.setupNavigation();
+            }
+            
+            setupEventListeners() {
+                this.spinButton.addEventListener('click', () => this.spin());
+                
+                // Modal close events
+                document.getElementById('close-question').addEventListener('click', () => this.closeModal('question-modal'));
+                document.getElementById('continue-learning').addEventListener('click', () => this.closeModal('congratulations-modal'));
+                document.getElementById('view-explanation').addEventListener('click', () => this.showExplanation());
+                
+                // Close modals on backdrop click
+                this.questionModal.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal-backdrop')) {
+                        this.closeModal('question-modal');
+                    }
+                });
+                
+                this.congratulationsModal.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal-backdrop')) {
+                        this.closeModal('congratulations-modal');
+                    }
+                });
+            }
+            
+            setupNavigation() {
+                const navToggle = document.querySelector('.nav-toggle');
+                const navMenu = document.querySelector('.nav-menu');
+                
+                navToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                });
+                
+                // Close mobile menu when clicking on links
+                document.querySelectorAll('.nav-menu a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                    });
+                });
+            }
+            
+            spin() {
+                if (this.isSpinning) return;
+                
+                const now = Date.now();
+                const timeSinceLastSpin = now - this.lastSpinTime;
+                
+                if (timeSinceLastSpin < this.cooldownTime) {
+                    const remainingTime = Math.ceil((this.cooldownTime - timeSinceLastSpin) / 1000);
+                    this.showNotification(`Please wait ${remainingTime} seconds before spinning again.`, 'warning');
+                    return;
+                }
+                
+                this.isSpinning = true;
+                this.lastSpinTime = now;
+                this.spinButton.disabled = true;
+                this.spinButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>SPINNING</span>';
+                
+                // Play spin sound
+                this.playSound('spin-sound');
+                
+                // Random rotation between 1440 and 2160 degrees (4-6 full rotations)
+                const randomRotation = 1440 + Math.random() * 720;
+                this.wheel.style.transform = `rotate(${randomRotation}deg)`;
+                this.wheel.style.transition = 'transform 3s cubic-bezier(0.25, 0.1, 0.25, 1)';
+                
+                // Calculate which segment was selected
+                const segmentAngle = 360 / 8; // 8 segments
+                const normalizedRotation = randomRotation % 360;
+                const selectedSegment = Math.floor((360 - normalizedRotation) / segmentAngle) % 8;
+                
+                setTimeout(() => {
+                    this.isSpinning = false;
+                    this.spinButton.disabled = false;
+                    this.spinButton.innerHTML = '<i class="fas fa-play"></i><span>SPIN</span>';
+                    
+                    // Update stats
+                    this.stats.totalSpins++;
+                    this.saveStats();
+                    this.updateStats();
+                    
+                    // Show question for selected topic
+                    const topics = ['Mathematics', 'Science', 'History', 'Geography', 'Literature', 'Art', 'Technology', 'Sports'];
+                    const selectedTopic = topics[selectedSegment];
+                    this.showQuestion(selectedTopic);
+                    
+                    // Start cooldown timer
+                    this.startCooldownTimer();
+                    
+                }, 3000);
+            }
+            
+            showQuestion(topic) {
+                const questions = this.questions[topic];
+                const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+                
+                document.getElementById('question-topic').textContent = topic;
+                document.getElementById('question-text').textContent = randomQuestion.question;
+                
+                const optionsContainer = document.getElementById('options-container');
+                optionsContainer.innerHTML = '';
+                
+                randomQuestion.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'option-button';
+                    button.textContent = option;
+                    button.addEventListener('click', () => this.selectAnswer(index, randomQuestion.correct, topic));
+                    optionsContainer.appendChild(button);
+                });
+                
+                this.openModal('question-modal');
+                this.startQuestionTimer();
+            }
+            
+            selectAnswer(selected, correct, topic) {
+                const options = document.querySelectorAll('.option-button');
+                options.forEach((option, index) => {
+                    option.disabled = true;
+                    if (index === correct) {
+                        option.classList.add('correct');
+                    } else if (index === selected && selected !== correct) {
+                        option.classList.add('incorrect');
+                    }
+                });
+                
+                setTimeout(() => {
+                    this.closeModal('question-modal');
+                    
+                    if (selected === correct) {
+                        this.stats.correctAnswers++;
+                        this.stats.currentStreak++;
+                        this.stats.learningStreak = Math.max(this.stats.learningStreak, this.stats.currentStreak);
+                        this.playSound('correct-sound');
+                        this.showCongratulations(true, topic);
+                    } else {
+                        this.stats.currentStreak = 0;
+                        this.showCongratulations(false, topic);
+                    }
+                    
+                    this.saveStats();
+                    this.updateStats();
+                }, 2000);
+            }
+            
+            showCongratulations(isCorrect, topic) {
+                const message = isCorrect 
+                    ? `Excellent! You mastered that ${topic} question!`
+                    : `Good try! Keep learning and you'll get it next time!`;
+                
+                document.getElementById('congratulations-message').textContent = message;
+                document.getElementById('points-earned').textContent = isCorrect ? '10' : '5';
+                
+                if (isCorrect) {
+                    this.playSound('win-sound');
+                }
+                
+                this.openModal('congratulations-modal');
+            }
+            
+            startQuestionTimer() {
+                let timeLeft = 30;
+                const timerBar = document.getElementById('question-timer-bar');
+                const timerText = document.getElementById('question-timer-text');
+                
+                const timer = setInterval(() => {
+                    timeLeft--;
+                    timerText.textContent = `${timeLeft}s`;
+                    timerBar.style.width = `${(timeLeft / 30) * 100}%`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        this.closeModal('question-modal');
+                        this.showNotification('Time\'s up! Try again next spin.', 'warning');
+                    }
+                }, 1000);
+            }
+            
+            startCooldownTimer() {
+                let timeLeft = 30;
+                const timerDisplay = document.getElementById('timer-display');
+                const timerText = document.getElementById('timer-text');
+                
+                timerDisplay.classList.add('active');
+                
+                const timer = setInterval(() => {
+                    timeLeft--;
+                    timerText.textContent = `Next spin in ${timeLeft}s`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        timerDisplay.classList.remove('active');
+                        timerText.textContent = 'Ready to Spin!';
+                    }
+                }, 1000);
+            }
+            
+            updateTimer() {
+                const now = Date.now();
+                const timeSinceLastSpin = now - this.lastSpinTime;
+                
+                if (timeSinceLastSpin < this.cooldownTime) {
+                    const remainingTime = Math.ceil((this.cooldownTime - timeSinceLastSpin) / 1000);
+                    document.getElementById('timer-text').textContent = `Next spin in ${remainingTime}s`;
+                    document.getElementById('timer-display').classList.add('active');
+                    
+                    setTimeout(() => this.updateTimer(), 1000);
+                } else {
+                    document.getElementById('timer-text').textContent = 'Ready to Spin!';
+                    document.getElementById('timer-display').classList.remove('active');
+                }
+            }
+            
+            updateStats() {
+                document.getElementById('total-spins').textContent = this.stats.totalSpins;
+                document.getElementById('correct-answers').textContent = this.stats.correctAnswers;
+                document.getElementById('learning-streak').textContent = this.stats.learningStreak;
+                
+                const accuracy = this.stats.totalSpins > 0 
+                    ? Math.round((this.stats.correctAnswers / this.stats.totalSpins) * 100) 
+                    : 0;
+                document.getElementById('accuracy-rate').textContent = `${accuracy}%`;
+                
+                // Update progress rings
+                this.updateProgressRing('daily-progress', 'daily-percentage', this.stats.totalSpins, 10);
+                this.updateProgressRing('weekly-progress', 'weekly-percentage', this.stats.totalSpins, 50);
+            }
+            
+            updateProgressRing(circleId, textId, current, goal) {
+                const circle = document.getElementById(circleId);
+                const text = document.getElementById(textId);
+                const percentage = Math.min((current / goal) * 100, 100);
+                
+                const circumference = 2 * Math.PI * 50;
+                const offset = circumference - (percentage / 100) * circumference;
+                
+                circle.style.strokeDasharray = circumference;
+                circle.style.strokeDashoffset = offset;
+                text.textContent = `${Math.round(percentage)}%`;
+            }
+            
+            openModal(modalId) {
+                document.getElementById(modalId).classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            closeModal(modalId) {
+                document.getElementById(modalId).classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas fa-${type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
+                this.notifications.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+            
+            showExplanation() {
+                this.showNotification('Explanation feature coming soon!', 'info');
+                this.closeModal('congratulations-modal');
+            }
+            
+            playSound(soundId) {
+                const audio = document.getElementById(soundId);
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(e => console.log('Audio play failed:', e));
+                }
+            }
+            
+            loadStats() {
+                const saved = localStorage.getItem('spinLearnStats');
+                return saved ? JSON.parse(saved) : {
+                    totalSpins: 0,
+                    correctAnswers: 0,
+                    learningStreak: 0,
+                    currentStreak: 0
+                };
+            }
+            
+            saveStats() {
+                localStorage.setItem('spinLearnStats', JSON.stringify(this.stats));
+            }
+        }
+        
+        // Initialize game when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new SpinLearnGame();
+        });
+    </script>
+</body>
+</html>
